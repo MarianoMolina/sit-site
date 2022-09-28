@@ -1,0 +1,180 @@
+<mat-card-title class="card-title">
+    Datos del Transportista
+</mat-card-title>
+<mat-card-content class="form-holder">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title>Contactos</mat-card-title>
+            <button mat-fab color="primary" matTooltip="Agregar equipo" (click)="addContacto()"><mat-icon>add</mat-icon></button>
+        </mat-card-header>
+        <mat-card-content class="array-edit">
+            <mat-card *ngFor="let contacto of current_transportista.Telefonos" class="icon-element-container">
+                <mat-icon class="icon-element">account_circle</mat-icon>
+                <span class="icon-span">{{contacto.Nombre}}</span>
+                <button class="icon-element" mat-fab color="accent" matTooltip="Editar equipo" (click)="editContacto(contacto)"><mat-icon>edit</mat-icon></button>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card">
+        <mat-card-title>Datos Básicos</mat-card-title>
+        <mat-card-content class="grid-1-1">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Ej. Juan Miguel Ortiz / Transporte Luján SRL" type="text" [(ngModel)]="current_transportista.Nombre">
+                <mat-hint>Nombre representativo del individuo o compañía</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select [(ngModel)]="current_transportista.Tipo" name="tipo_transportistas">
+                    <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+                        {{tipo}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Tipo de entidad</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Contacto principal</mat-label>
+                <mat-select [(ngModel)]="current_transportista.Telefono_principal" name="contacto_equipo">
+                    <mat-option *ngFor="let telefono of lista_telefonos" [value]="telefono">
+                        {{telefono}}
+                    </mat-option>
+                </mat-select>
+            <mat-hint>Contacto a asociar con este transportista</mat-hint>
+            <mat-icon matSuffix>priority_high</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>CUIT</mat-label>
+                <input matInput placeholder="Ej. 2044320149" type="number" [(ngModel)]="current_transportista.CUIT" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                <mat-hint>Numero de CUIT</mat-hint>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card" *ngIf="current_transportista.Tipo === 'Empresa'">
+        <mat-card-header>
+            <mat-card-title>Empresa</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="grid-1-1">
+            <mat-form-field appearance="outline">
+                <mat-label>Razón Social</mat-label>
+                <input matInput placeholder="Ej. Transporte Luján SRL" type="text" [(ngModel)]="current_transportista.Razon_social">
+                <mat-hint>Nombre legal</mat-hint>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title>Locación</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="grid-1-1">
+            <mat-form-field appearance="outline">
+                <mat-label>Ubicacion (Provincia)</mat-label>
+                <mat-select [(ngModel)]="current_transportista.Ubicacion" name="provincia_residencia">
+                    <mat-option *ngFor="let provincia of provincias" [value]="provincia">
+                        {{provincia}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Provincia de residencia</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Zonas de Interés: Provincias</mat-label>
+                <mat-chip-list #provinciasInteres aria-label="Provincias de interés">
+                    <mat-chip
+                        *ngFor="let provincia of provincias_elegidas"
+                        (removed)="removeProvincia(provincia)">
+                        {{provincia}}
+                        <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                    <input
+                        placeholder="Agregar provincias de interés"
+                        #provinciaSelect
+                        [formControl]="provinceCtrl"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="provinciasInteres"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="addProvincia($event)">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedProvincia($event)">
+                    <mat-option *ngFor="let provincia of filtered_provincias | async" [value]="provincia">
+                        {{provincia}}
+                    </mat-option>
+                    </mat-autocomplete>
+                <mat-hint>Agregar las provincias de interés</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Zonas de Interés: Regiones</mat-label>
+                <mat-chip-list #regionesInteres aria-label="Regiones de interés">
+                    <mat-chip
+                        *ngFor="let region of regiones_elegidas"
+                        (removed)="removeRegion(region)">
+                        {{region}}
+                        <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                    <input
+                        placeholder="Agregar regiones de interés"
+                        #regionSelect
+                        [formControl]="regionesCtrl"
+                        [matAutocomplete]="regionAuto"
+                        [matChipInputFor]="regionesInteres"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="addRegion($event)">
+                    </mat-chip-list>
+                    <mat-autocomplete #regionAuto="matAutocomplete" (optionSelected)="selectedRegion($event)">
+                    <mat-option *ngFor="let region of filtered_regiones | async" [value]="region">
+                        {{region}}
+                    </mat-option>
+                    </mat-autocomplete>
+                <mat-hint>Agregar las regiones de interés</mat-hint>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title>Datos Personales</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="grid-1-1">
+            <mat-form-field appearance="outline">
+                <mat-label>Comentarios</mat-label>
+                <input matInput placeholder="Ej. Interesado en x ruta, etc." type="text" [(ngModel)]="current_transportista.Comentarios">
+                <mat-hint>Ingresar comentarios</mat-hint>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card">
+        <div class="grid-1-1">
+            <mat-card-title>Equipos</mat-card-title>
+            <button mat-fab color="primary" matTooltip="Agregar equipo" (click)="addEquipo()"><mat-icon>add</mat-icon></button>
+        </div>
+        <mat-card-content id="lista-equipos"  class="grid-1-1-1-1">
+            <mat-card *ngFor="let equipo of current_transportista.Equipos" class="icon-element-container">
+                <mat-icon class="icon-element">local_shipping</mat-icon>
+                <span class="icon-span">{{equipo.Telefono.Nombre}}</span>
+                <button class="icon-element" mat-fab color="accent" matTooltip="Editar equipo" (click)="editEquipo(equipo)"><mat-icon>edit</mat-icon></button>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="form-card" *ngIf="this.type === 'edit'">
+        <mat-card-header>
+            <mat-card-title>Status</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="grid-1-1">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select [(ngModel)]="current_transportista.Status" name="tipo_transportistas">
+                    <mat-option *ngFor="let tipo of status" [value]="tipo">
+                        {{tipo}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Status de este transportista</mat-hint>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <mat-dialog-actions class="action-buttons">
+        <button class="action-buttons" mat-raised-button mat-dialog-close color="accent">Cancelar</button>
+        <button mat-raised-button color="warn" (click)="deleteAction()" *ngIf="type === 'edit'">Borrar</button>
+        <button class="action-buttons" mat-raised-button color="primary" (click)="guardarTransportista()">Guardar</button>
+    </mat-dialog-actions>
+</mat-card-content>

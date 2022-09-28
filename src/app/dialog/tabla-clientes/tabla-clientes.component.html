@@ -1,0 +1,26 @@
+<mat-card-content>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8 client-table">
+        <ng-container matColumnDef="cliente">
+        <mat-header-cell *matHeaderCellDef> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.cliente}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="col1">
+        <mat-header-cell *matHeaderCellDef> Acuerdo </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.col1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="col2">
+        <mat-header-cell *matHeaderCellDef> Días desde Remito </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.col2}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="col3">
+        <mat-header-cell *matHeaderCellDef> Días desde Factura </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.col3}} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</mat-card-content>
+<mat-card-actions>
+    <button class="close-button" mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+</mat-card-actions>

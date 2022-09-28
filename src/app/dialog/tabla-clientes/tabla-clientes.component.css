@@ -1,0 +1,19 @@
+.close-button {
+    margin: auto !important;
+    display: flex;
+}
+.client-table {
+    min-width: 900px;
+}
+mat-cell, mat-header-cell, mat-footer-cell {
+    justify-content: center;
+    text-align: center;
+}
+::ng-deep .cdk-overlay-pane {
+    overflow-y: auto;
+}
+@media screen and (max-width:1000px) {
+    .client-table {
+        min-width: none;
+    }
+}

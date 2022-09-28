@@ -1,0 +1,35 @@
+<div class="add-container options">
+    <mat-card class="button-card button-role" (click)="selectOption('single', $event)">
+        <mat-card-title>
+            Agregar 1 transportista
+        </mat-card-title>
+        <mat-card-content>
+            <mat-icon>
+                person_add
+            </mat-icon>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="button-card button-role" (click)="selectOption('multi', $event)">
+        <mat-card-title>
+            Agregar en bache (csv)
+        </mat-card-title>
+        <mat-card-content>
+            <mat-icon>
+                group_add
+            </mat-icon>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="add-container content">
+    <mat-card class="card batch-transportista" [ngClass]="{'hidden': multi_add_hide}">
+        <mat-card-title>
+            Elegir archivo para subir
+        </mat-card-title>
+        <mat-card-content>
+            <div class="option-container">
+                <input class="form-control" id="file-upload" type="file" (change)="onChange($event)">
+                <button mat-raised-button color="primary" (click)="confirmAction()">Confirmar</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

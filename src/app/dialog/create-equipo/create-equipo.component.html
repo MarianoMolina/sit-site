@@ -1,0 +1,137 @@
+<mat-card-title class="card-title">
+    Datos de Equipo
+</mat-card-title>
+<mat-card class="form-card">
+    <mat-card-header>
+        <mat-card-title>Contacto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field appearance="outline">
+            <mat-label>Elegir contacto</mat-label>
+            <mat-select [(ngModel)]="telefono_elegido" name="contacto_equipo" (selectionChange)="updateContacto($event)">
+                <mat-option *ngFor="let telefono of lista_telefonos" [value]="telefono">
+                    {{telefono}}
+                </mat-option>
+            </mat-select>
+        <mat-hint>Contacto a relacionar con este equipo</mat-hint>
+        <mat-icon matSuffix>priority_high</mat-icon>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Ej. Juan Martinez" type="text" [(ngModel)]="equipo.Telefono.Nombre">
+            <mat-icon matSuffix>priority_high</mat-icon>
+            <mat-hint>Nombre completo del contacto asociado a este equipo</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Cód. País</mat-label>
+            <input matInput placeholder="Ej. 54" type="number" [(ngModel)]="equipo.Telefono.cod">
+            <mat-icon matSuffix>priority_high</mat-icon>
+            <mat-hint>Código de país</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Cód. Area</mat-label>
+            <input matInput placeholder="Ej. 011" type="number" [(ngModel)]="equipo.Telefono.area">
+            <mat-icon matSuffix>priority_high</mat-icon>
+            <mat-hint>Código de área</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput placeholder="Ej. 56567878" type="number" [(ngModel)]="equipo.Telefono.telefono">
+            <mat-icon matSuffix>priority_high</mat-icon>
+            <mat-hint>Número personal</mat-hint>
+        </mat-form-field> -->
+    </mat-card-content>
+</mat-card>
+<mat-card class="form-card">
+    <mat-card-title>Datos Generales</mat-card-title>
+    <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Tipo de Unidad</mat-label>
+            <mat-chip-list #tipoUnidad aria-label="Tipos de unidades">
+                <mat-chip
+                    *ngFor="let tipo of tipos_elegidas"
+                    (removed)="removeTipo(tipo)">
+                    {{tipo}}
+                    <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip>
+                <input
+                    placeholder="Tipo de unidad"
+                    #tiposSelect
+                    [formControl]="tiposCtrl"
+                    [matAutocomplete]="tipoAuto"
+                    [matChipInputFor]="tipoUnidad"
+                    [matChipInputSeparatorKeyCodes]="separatorKeyCodes_"
+                    (matChipInputTokenEnd)="addTipo($event)">
+                </mat-chip-list>
+                <mat-autocomplete #tipoAuto="matAutocomplete" (optionSelected)="selectedTipo($event)">
+                    <mat-option *ngFor="let tipo of filtered_tipos | async" [value]="tipo">
+                        {{tipo}}
+                    </mat-option>
+                </mat-autocomplete>
+            <mat-hint>Seleccionar todos los que corresponda</mat-hint>
+            <mat-icon matSuffix>priority_high</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Capacidad (toneladas?)</mat-label>
+            <input matInput placeholder="Ej. 1000t" type="number" [(ngModel)]="equipo.Capacidad" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            <mat-hint></mat-hint>
+            <mat-icon matSuffix>priority_high</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Rubros</mat-label>
+            <mat-chip-list #rubroUnidad aria-label="Rubros relevantes">
+                <mat-chip
+                    *ngFor="let rubro of rubros_elegidas"
+                    (removed)="removeRubro(rubro)">
+                    {{rubro}}
+                    <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip>
+                <input
+                    placeholder="Rubros relevantes"
+                    #rubrosSelect
+                    [formControl]="rubrosCtrl"
+                    [matAutocomplete]="rubroAuto"
+                    [matChipInputFor]="rubroUnidad"
+                    [matChipInputSeparatorKeyCodes]="separatorKeyCodes_"
+                    (matChipInputTokenEnd)="addRubro($event)">
+                </mat-chip-list>
+                <mat-autocomplete #rubroAuto="matAutocomplete" (optionSelected)="selectedRubro($event)">
+                    <mat-option *ngFor="let rubro of filtered_rubros | async" [value]="rubro">
+                        {{rubro}}
+                    </mat-option>
+                </mat-autocomplete>
+            <mat-hint>Seleccionar todos los que corresponda</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Situación de Cubiertas</mat-label>
+            <input matInput placeholder="Ej. Reemplazo en 6 meses, nuevas, etc." type="text" [(ngModel)]="equipo.Situacion_cubiertas">
+            <mat-hint></mat-hint>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<mat-card class="form-card">
+    <mat-card-header>
+        <mat-card-title>Habilitaciones</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-card class="form-card" *ngFor="let hab of habilitacion_keys">
+            <mat-card-header>
+                <mat-card-title>{{hab}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <span>{{tituloTemplateKey(hab)}}: </span>
+                <span  *ngIf="datoTemplateKey(hab) != ''">{{datoTemplateKey(hab)}}</span>
+                <button mat-fab color="primary" matTooltip="Agregar" (click)="addHabilitacion(hab)"><mat-icon>edit</mat-icon></button>
+            </mat-card-content>
+        </mat-card>
+    </mat-card-content>
+</mat-card>
+<mat-dialog-actions class="action-buttons">
+    <button mat-raised-button color="accent" mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="warn" (click)="deleteAction()" *ngIf="type === 'edit'">Borrar</button>
+    <button mat-raised-button color="primary" (click)="guardarEquipo()">Guardar</button>
+</mat-dialog-actions>

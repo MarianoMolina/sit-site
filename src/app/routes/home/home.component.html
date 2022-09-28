@@ -1,0 +1,23 @@
+<div *ngIf="finished_loading && (authService.loggedIn$ | async) && role == 'admin' || role == 'sadmin'">
+    <mat-card class="button-card button-role" (click)="menuClicked('calc')">
+        <mat-card-title><mat-icon>calculate</mat-icon> Calcular precios</mat-card-title>
+        <mat-card-content>Permite calcular el precio a cobrar dependiendo de la tarifa, la rentabilidad deseada, los tiempos de pago, inflación y comisiones relevantes</mat-card-content>
+    </mat-card>
+    <mat-card class="button-card button-role" (click)="menuClicked('nuevo_transportista')">
+        <mat-card-title><mat-icon>add_circle</mat-icon> Crear nuevo transportista</mat-card-title>
+        <mat-card-content>Permite crear una nueva instancia de transportistas</mat-card-content>
+    </mat-card>
+    <mat-card class="button-card button-role" (click)="menuClicked('lista_transportistas')">
+        <mat-card-title><mat-icon>recent_actors</mat-icon> Ver base de datos de transportisas</mat-card-title>
+        <mat-card-content>Ver listado de los transportistas vigentes, filtrarlos y enviar mensajes en grupo</mat-card-content>
+    </mat-card>
+</div>
+<app-signup *ngIf="finished_loading && !(authService.loggedIn$ | async)"></app-signup>
+<mat-spinner class="loading-spinner" *ngIf="!finished_loading"></mat-spinner>
+<div class="no-role-container" [hidden]="!(role == '' && finished_loading && (authService.loggedIn$ | async))">
+    <p>Parece que tu cuenta no cuenta con un rol asignado. 
+    Tendrás que esperar a que un administrador te asigne un rol antes de poder continuar.<br>
+    Por cualquier duda contactarse a <b>email@email.com</b></p> 
+    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)"></ng-lottie>
+    <p>Lamentamos las molestias.<br><b>SIT</b></p>
+</div>

@@ -1,0 +1,7 @@
+.button-card {
+    max-width: 600px;
+    margin: 10px auto;
+}
+.button-card mat-icon {
+    vertical-align: bottom;
+}

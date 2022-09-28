@@ -1,0 +1,30 @@
+
+.add-container { 
+  text-align: center;
+}
+.add-container.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: fit-content;
+  margin: 20px auto;
+  gap: 5px;
+}
+.card.add-transportista mat-card-actions button {
+    display: block;
+    margin:auto
+}
+.content .card {
+  max-width: fit-content;
+  margin:auto;
+  width: auto
+}
+.icon-element {
+  display: flex;
+width: fit-content;
+}
+.icon-element > * {
+  margin:auto
+}
+.form-holder {
+  gap: 5px;
+}

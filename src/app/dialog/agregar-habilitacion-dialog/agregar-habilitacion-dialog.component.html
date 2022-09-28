@@ -1,0 +1,60 @@
+<mat-card-title class="card-title">
+    Habilitaciones del equipo
+</mat-card-title>
+<mat-card class="form-card" *ngIf="headers.includes('Numero')">
+    <mat-card-header>
+        <mat-card-title>Número</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Número</mat-label>
+            <input matInput type="number">
+            <mat-hint></mat-hint>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<mat-card class="form-card" *ngIf="headers.includes('Tipo_vehiculo')">
+    <mat-card-header>
+        <mat-card-title>Tipo de Vehículo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de Vehículo</mat-label>
+            <mat-select [(ngModel)]="current_habilitacion.Tipo_vehiculo" name="tipos_vehiculo">
+                <mat-option *ngFor="let tipo of tipos_vehiculo" [value]="tipo">
+                    {{tipo}}
+                </mat-option>
+            </mat-select>
+            <mat-hint></mat-hint>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<mat-card class="form-card" *ngIf="headers.includes('Fecha')">
+    <mat-card-header>
+        <mat-card-title>Fecha</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width-field">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<mat-card class="form-card" *ngIf="headers.includes('File')">
+    <mat-card-title>
+        Elegir archivo para subir
+    </mat-card-title>
+    <mat-card-content>
+        <div class="option-container">
+            <input class="form-control" id="file-upload" type="file" (change)="onChange($event)">
+            <button mat-raised-button color="primary" (click)="confirmUpload()">Guardar</button>
+        </div>
+    </mat-card-content>
+</mat-card>
+<mat-dialog-actions class="action-buttons">
+    <button mat-raised-button color="accent" mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="confirmAction()">Aceptar</button>
+</mat-dialog-actions>

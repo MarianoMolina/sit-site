@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="summary">
+      <mat-card>
+        <mat-card-title>Resumen</mat-card-title>
+        <table class="mat-table" >
+          <tr class="mat-row">
+            <td class="mat-cell">Tarifa Cobrada</td>
+            <td class="mat-cell">{{tipo_tarifa ? (tarifa_deseada | currency:'USD') : (tarifa | currency:'USD')}}</td>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">Aumento</td>
+            <td class="mat-cell">{{aumento_tarifa | percent }}</td>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">Tarifa Transportista</td>
+            <td class="mat-cell negative-value">- {{tipo_tarifa ? (tarifa | currency:'USD') : (tarifa_deseada | currency:'USD')}}</td>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">Comisión Transportista</td>
+            <td class="mat-cell">+ {{COM_T_v | currency:'USD'}}</td>
+          </tr>
+          <tr class="mat-row result-row">
+            <td class="mat-cell">Resultado Bruto</td>
+            <td class="mat-cell">{{RB_v | currency:'USD'}}</td>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">Impuestos</td>
+            <td class="mat-cell negative-value">- {{IMP_v | currency:'USD'}}</td>
+          </tr>
+          <tr class="mat-row">
+            <td class="mat-cell">Comisión Empleado</td>
+            <td class="mat-cell negative-value">- {{COM_E_v | currency:'USD'}}</td>
+          </tr>
+          <tr class="mat-row result-row">
+            <td class="mat-cell">Resultado Neto Nominal</td>
+            <td class="mat-cell">{{RN_n_v | currency:'USD'}}</td>
+          </tr>
+          <tr class="mat-row result-row">
+            <td class="mat-cell">Resultado Neto Financiero</td>
+            <td class="mat-cell">{{RN_f_v | currency:'USD'}}</td>
+          </tr>
+        </table>
+        <mat-card class="highlight">
+          <mat-card-title>{{tarifa_deseada | currency:'USD'}}</mat-card-title>
+          <mat-card-subtitle>Tarifa {{texto_tarifa(tipo_tarifa)}}</mat-card-subtitle>
+        </mat-card> 
+      </mat-card>
+    </div>
+    <div class="calc">
+      <mat-card>
+        <mat-card-subtitle class="main-input">Definir Tarifa</mat-card-subtitle>
+        <mat-slide-toggle [(ngModel)]="tipo_tarifa" (change)="updateTarifa()">{{texto_tarifa(tipo_tarifa)}}</mat-slide-toggle>        
+        <mat-form-field appearance="fill">
+          <mat-label>Tarifa {{texto_tarifa(tipo_tarifa)}} ($) (ej: 1000)</mat-label>
+          <input matInput type="number" [(ngModel)]="tarifa" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Rentabilidad Deseada (%) (ej: 5)</mat-label>
+          <input matInput type="number" [(ngModel)]="rentabilidad_deseada" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>Términos</mat-card-subtitle>
+        <button class="client_button" color="accent" mat-raised-button (click)="openDialog()">Ver datos de clientes</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Lag de Pago (días) (ej: 45)</mat-label>
+          <input matInput type="number" [(ngModel)]="lag_pago" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Lag de Cobro (días) (ej: 45)</mat-label>
+          <input matInput type="number" [(ngModel)]="lag_cobro" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+      </mat-card>
+    </div>
+    <div class="calc second">
+      <mat-card>
+        <mat-card-subtitle>Comisiones</mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>Comisión Empleado (%) (ej: 20)</mat-label>
+          <input matInput type="number" [(ngModel)]="com_empleado" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Comisión por Venta (%) (ej: 5)</mat-label>
+          <input matInput type="number" [(ngModel)]="com_por_venta" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>Inflación</mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>Inflacion mensual (%) (ej: 5)</mat-label>
+          <input matInput type="number" [(ngModel)]="inflacion_mensual" (keypress)="numberOnly($event)" (change)="updateTarifa()">
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
